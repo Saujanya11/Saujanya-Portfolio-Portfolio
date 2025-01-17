@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saujanya Mishrikotkar | Interactive Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --accent: #7d67ff;
+            --dark: #0a0a0a;
+            --light: #ffffff;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: flex-end;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--light);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+        }
+
+        .nav-text {
+            font-family: 'Syncopate', sans-serif;
+            color: var(--light);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover .nav-dot,
+        .nav-item.active .nav-dot {
+            transform: scale(1.5);
+            background: var(--primary);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .nav-item:hover .nav-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            padding: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: radial-gradient(circle at center, rgba(79, 172, 254, 0.2) 0%, var(--dark) 70%);
+            text-align: center;
+        }
+
+        @keyframes writing {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Syncopate', sans-serif; /* Updated font */
+            font-size: 5vw;
+            font-weight: 700;
+            color: var(--primary); /* Updated color */
+            overflow: hidden; /* Ensures the text is hidden until animated */
+            white-space: nowrap; /* Prevents text wrapping */
+            border-right: 4px solid var(--primary); /* Cursor effect */
+            animation: writing 4s steps(30) forwards; /* Writing animation */
+            position: relative;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2);
+        }
+
+        .card h3 {
+            font-family: 'Syncopate', sans-serif;
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 24px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--gradient);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            background: rgba(79, 172, 254, 0.1);
+        }
+
+        .skill-item span {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        /* Contact Section */
+        .contact-info {
+            display: grid;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .contact-item a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--secondary);
+        }
+
+        /* Education Content */
+        .education-content {
+            margin-top: 20px;
+        }
+
+        .education-content h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .education-content ul {
+            margin-top: 15px;
+            margin-left: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .education-content li {
+            margin-bottom: 8px;
+        }
+
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 50vh;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            border-radius: 3px;
+        }
+
+        .scroll-progress-bar {
+            width: 100%;
+            height: 0%;
+            background: var(--gradient);
+            transition: height 0.2s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section {
+                padding: 50px 20px;
+            }
+
+            .hero h1 {
+                font-size: 8vw;
+            }
+
+            .navbar {
+                bottom: 20px;
+                top: unset;
+                right: 50%;
+                transform: translateX(50%);
+                background: rgba(10, 10, 10, 0.8);
+                padding: 15px;
+                border-radius: 50px;
+            }
+
+            .nav-links {
+                flex-direction: row;
+                gap: 20px;
+            }
+
+            .nav-text {
+                display: none;
+            }
+
+            .card {
+                padding: 30px;
+                margin: 10px;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        /* Links */
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress -->
+    <div class="scroll-progress">
+        <div class="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-links">
+            <div class="nav-item active">
+                <span class="nav-text">Home</span>
+                <div class="nav-dot" data-section="hero"></div>
+            </div>
+            <div class="nav-item">
+                <span class="nav-text">About</span>
+                <div class="nav-dot" data-section="about"></div>
+            </div>
+            <div class="nav-item">
+                <span class="nav-text">Education</span>
+                <div class="nav-dot" data-section="education"></div>
+            </div>
+            <div class="nav-item">
+                <span class="nav-text">Skills</span>
+                <div class="nav-dot" data-section="skills"></div>
+            </div>
+            <div class="nav-item">
+                <span class="nav-text">Contact</span>
+                <div class="nav-dot" data-section="contact"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sections -->
+    <section class="section hero" id="hero">
+        <div class="content">
+            <h1>Saujanya Mishrikotkar</h1>
+            <p>Computer Science Engineering Student</p>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="card">
+            <h3>About Me</h3>
+            <p>I am a passionate Computer Science Engineering student with a keen interest in solving complex problems and creating innovative solutions. My journey in technology is driven by curiosity and a desire to make a positive impact through code. I am constantly learning and exploring new technologies to expand my skillset.</p>
+        </div>
+    </section>
+
+    <section class="section" id="education">
+        <div class="card">
+            <h3>Education</h3>
+            <div class="education-content">
+                <h4>Walchand Institute of Technology, Solapur</h4>
+                <p>Bachelor of Technology in Computer Science (2022 - 2026)</p>
+                <ul>
+                    <li>Focus on core computer science concepts and modern technologies</li>
+                    <li>Active participant in technical workshops and coding competitions</li>
+                    <li>Member of the college's technical club</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="skills">
+        <div class="skills-grid">
+            <div class="skill-item"><span>Java</span></div>
+            <div class="skill-item"><span>Python</span></div>
+            <div class="skill-item"><span>C Programming</span></div>
+            <div class="skill-item"><span>Data Structures</span></div>
+            <div class="skill-item"><span>Algorithms</span></div>
+            <div class="skill-item"><span>Google Cloud</span></div>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <div class="card">
+            <h3>Contact</h3>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>Phone:</strong>
+                    <span>+919096537605</span>
+                </div>
+                <div class="contact-item">
+                    <strong>Email:</strong>
+                    <span>saujanyamishrikotkar65@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <strong>Location:</strong>
+                    <span>Solapur</span>
+                </div>
+                <div class="contact-item">
+                    <strong>LinkedIn:</strong>
+                    <a href="https://www.linkedin.com/in/saujanya-mishrikotkar-663832259" target="_blank">Saujanya Mishrikotkar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Smooth Scroll
+        document.querySelectorAll('.nav-dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                const targetSection = document.getElementById(dot.dataset.section);
+                window.scrollTo({
+                    top: targetSection.offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll Progress
+        const progressBar = document.querySelector('.scroll-progress-bar');
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const fullHeight = document.body.clientHeight;
+            const scrolled = window.scrollY;
+            const percentScrolled = (scrolled / (fullHeight - windowHeight)) * 100;
+            progressBar.style.height = `${percentScrolled}%`;
+        });
+
+        // Section Animations
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => {
+            gsap.from(section.children, {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top center",
+                    end: "bottom center",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+
+        // Nav Dots Active State
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+
+                if (scrollPosition >= sectionTop - sectionHeight / 3) {
+                    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                    document.querySelectorAll('.nav-item')[index].classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
